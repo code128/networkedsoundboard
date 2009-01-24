@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" initialize="init()">
+	<mx:Script>
+		<![CDATA[
+		import mx.binding.utils.BindingUtils;
+		import flash.events.*;
+		import flash.net.*;
+		
+		[Bindable]
+		private var soundArray:Array;
+		
+		private function init():void { 
+			getSoundList();
+		}
+			
+		private function getSoundList():void {
+			trace('getting sounds');				
+			var loader:URLLoader = new URLLoader();
+            configureListeners(loader);
+
+            var request:URLRequest = new URLRequest("../getSounds/");
+            try {
+                loader.load(request);
+            } catch (error:Error) {
+                trace("Unable to load requested document.");
+            }
+		}
+		
+		private function configureListeners(dispatcher:IEventDispatcher):void {
+            dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+        }
+        
+        private function completeHandler(event:Event):void {
+            var loader:URLLoader = URLLoader(event.target);
+            trace("completeHandler: " + loader.data);
+           	soundArray = String(loader.data).split(',');
+        }
+		
+			
+		]]>
+	</mx:Script>
+	<mx:TileList left="20" backgroundAlpha="0" 
+		dataProvider="{soundArray}" itemRenderer="LinkRenderer" height="100%" right="125" top="10">
+	</mx:TileList>
+	<mx:Image y="23" source="logo.png" right="25"/>
+</mx:Application>
