@@ -21,7 +21,8 @@ Instructions:
 	OS's
 		This should work out of the box on an OSX machine. 
 		Linux, Windows and anything that can run Python will also work if 
-		you have a command line audio player and update the path in SoundBoard.py
+		you have a command line audio player and update the path in SoundBoard.py. 
+    The ability to speak words is also run from the command line. 
 		
 	Run this from the terminal like so:
 		python SoundBoard.py
