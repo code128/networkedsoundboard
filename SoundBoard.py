@@ -14,6 +14,7 @@ localPath = os.path.dirname( os.path.realpath( __file__ ) )
 ## ------------SETTINGS----------------------
 soundEffectsDirectory = 'soundEffects'		 
 cmdLinePlaySoundCommand = os.path.join(localPath, "play") # Update "play" if you want to use a different audio player. 
+osSpeakCommand = "say"
 ## ------------SETTINGS----------------------
 
 
@@ -33,8 +34,15 @@ class getSoundList:
     def GET(self):
         return os.listdir(soundEffectsDirectory).__str__()[1:-1] #Remove the brackets around the list repr with [1:-1]
 
+class speak:
+    def GET(self, words):
+    	if words:
+    		os.popen(osSpeakCommand + " " + words)
+        return "said"
+
 urls = (
     '/getSounds/', 'getSoundList',
+    '/speak/(.*)', 'speak',
     '/(.*)', 'playLocalSound',
 )
 app = web.application(urls, globals())

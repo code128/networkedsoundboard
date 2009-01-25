@@ -35,6 +35,17 @@
             trace("completeHandler: " + loader.data);
            	soundArray = String(loader.data).split(',');
         }
+        
+        private function sayIt():void {
+        	var url:String = "../speak/" + speaker.text ;
+			var request:URLRequest = new URLRequest(url);
+			try {
+				sendToURL(request);
+			}
+			catch (e:Error) {
+				trace("problem speaking your text: " + e);
+			}
+        }
 		
 			
 		]]>
@@ -43,4 +54,6 @@
 		dataProvider="{soundArray}" itemRenderer="LinkRenderer" height="100%" right="125" top="10">
 	</mx:TileList>
 	<mx:Image y="23" source="logo.png" right="25"/>
+	<mx:TextInput id="speaker" width="107" right="10" bottom="40" />
+	<mx:Button label="Say it" bottom="10" right="10" click="sayIt()"/>
 </mx:Application>
