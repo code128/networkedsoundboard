@@ -3,6 +3,7 @@
 # SoundBoard runs on an OSX machine and plays sounds from the command line
 # when told to by HTTP requests. Multiple clients can control it and 
 # play sound effects from the included Flash interface. 
+# V 1.0
 ##  
 
 import web

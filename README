@@ -27,7 +27,7 @@ Instructions:
 		python SoundBoard.py
 		
 	Access it from a browser as http://{machinename}:8080/static/SoundBoard.html
-		Then click any of the sounds and the should play on the server machine. 
+		Then click any of the sounds and they should play on the server machine. 
 		
 	To add more sounds just add them to the soundEffects folder and refresh the browser. 
 	
