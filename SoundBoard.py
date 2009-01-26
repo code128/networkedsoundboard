@@ -33,8 +33,28 @@ class getSoundList:
     def GET(self):
         return os.listdir(soundEffectsDirectory).__str__()[1:-1] #Remove the brackets around the list repr with [1:-1]
 
+class Upload:
+    def GET(self):
+        return """<html><head></head><body>
+<form method="POST" enctype="multipart/form-data" action="">
+<input type="file" name="myfile" />
+<br/>
+<input type="submit" />
+</form>
+</body></html>"""
+
+    def POST(self):
+        x = web.input(myfile={})
+        f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
+        f.write(x['myfile'].value)
+        f.close()
+        web.debug(x['myfile'].value) # This is the file contents
+        web.debug(x['myfile'].filename) # This is the filename
+        raise web.seeother('/upload')
+
 urls = (
     '/getSounds/', 'getSoundList',
+    '/upload/', 'Upload', 
     '/(.*)', 'playLocalSound',
 )
 app = web.application(urls, globals())
