@@ -46,7 +46,7 @@ class Upload:
 <form method="POST" enctype="multipart/form-data" action="">
 <input type="file" name="myfile" />
 <br/>
-<input type="submit" />
+<input type="submit" value="Upload New Sound"  />
 </form>
 </body></html>"""
 
@@ -55,9 +55,7 @@ class Upload:
         f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
         f.write(x['myfile'].value)
         f.close()
-        web.debug(x['myfile'].value) # This is the file contents
-        web.debug(x['myfile'].filename) # This is the filename
-        raise web.seeother('/upload')
+        raise web.seeother('/static/SoundBoard.html')
 
 urls = (
     '/getSounds/', 'getSoundList',

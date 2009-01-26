@@ -32,11 +32,11 @@
         
         private function completeHandler(event:Event):void {
             var loader:URLLoader = URLLoader(event.target);
-            trace("completeHandler: " + loader.data);
            	soundArray = String(loader.data).split(',');
         }
         
         private function sayIt():void {
+        	trace("running");
         	var url:String = "../speak/" + speaker.text ;
 			var request:URLRequest = new URLRequest(url);
 			try {
@@ -46,14 +46,24 @@
 				trace("problem speaking your text: " + e);
 			}
         }
+        
+        private function uploadFile():void { 
+        	// This should be handled inside Flex but for some reason web.py chokes on
+        	// a flex file upload. So for now just point to an HTML page. 
+        	flash.net.navigateToURL(new URLRequest("/upload/"));
+        }
 		
 			
 		]]>
 	</mx:Script>
-	<mx:TileList left="20" backgroundAlpha="0" 
-		dataProvider="{soundArray}" itemRenderer="LinkRenderer" height="100%" right="125" top="10">
+	<mx:TileList left="20" backgroundAlpha="0" right="125" top="10" columnWidth="150"
+		dataProvider="{soundArray}" itemRenderer="LinkRenderer" height="100%" >
 	</mx:TileList>
-	<mx:Image y="23" source="logo.png" right="25"/>
-	<mx:TextInput id="speaker" width="107" right="10" bottom="40" />
+	<mx:VBox right="25" top="10">
+		<mx:Image source="logo.png"/>
+		<mx:Button label="Upload Sound" click="uploadFile()"/>		
+	</mx:VBox>
+	
+	<mx:TextInput id="speaker" width="107" right="10" bottom="40" enter="sayIt()"  />
 	<mx:Button label="Say it" bottom="10" right="10" click="sayIt()"/>
 </mx:Application>
