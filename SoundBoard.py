@@ -40,9 +40,29 @@ class speak:
     		os.popen(osSpeakCommand + " " + words)
         return "said"
 
+class Upload:
+    def GET(self):
+        return """<html><head></head><body>
+<form method="POST" enctype="multipart/form-data" action="">
+<input type="file" name="myfile" />
+<br/>
+<input type="submit" />
+</form>
+</body></html>"""
+
+    def POST(self):
+        x = web.input(myfile={})
+        f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
+        f.write(x['myfile'].value)
+        f.close()
+        web.debug(x['myfile'].value) # This is the file contents
+        web.debug(x['myfile'].filename) # This is the filename
+        raise web.seeother('/upload')
+
 urls = (
     '/getSounds/', 'getSoundList',
     '/speak/(.*)', 'speak',
+    '/upload/', 'Upload', 
     '/(.*)', 'playLocalSound',
 )
 app = web.application(urls, globals())
