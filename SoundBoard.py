@@ -2,11 +2,15 @@
 # Joshua Bloom
 # SoundBoard runs on an OSX machine and plays sounds from the command line
 # when told to by HTTP requests. Multiple clients can control it and 
-# play sound effects from the included Flash interface. 
-# V 1.1
+# play sound effects through the included HTML interface. 
+# V 2.0
 ##  
 
-import json
+try:
+    import json
+except:
+    from simplejson import json
+
 import web
 import os 
 
@@ -55,15 +59,6 @@ class index:
         raise web.seeother('/static/index.html')
 
 class Upload:
-    def GET(self):
-        return """<html><head></head><body>
-<form method="POST" enctype="multipart/form-data" action="">
-<input type="file" name="myfile" />
-<br/>
-<input type="submit" value="Upload New Sound"  />
-</form>
-</body></html>"""
-
     def POST(self):
         x = web.input(myfile={})
         f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
