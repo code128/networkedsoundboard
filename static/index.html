@@ -43,6 +43,11 @@
 		.display-grid .column, .display-grid .columns { background: #ddd; }
 				
 	</style>
+	<script type="text/javascript">
+		playPreview = function(p){
+			console.log(p);
+		}
+	</script>
 
 </head>
 <body>
@@ -54,23 +59,28 @@
 			<hr />
 		</div>
 	</div>
+	<audio id="preview_player"></audio>
 
 	<div id="button_grid" class="row">
 		<ul id="button_grid" class="block-grid five-up">
+			<li>
+				<div data-id="aladdin_goodbye.wav">
+					<a href="#" class="nice radius small blue button" data-id="aladdin_goodbye.wav">Aladdin Goodbye</a>
+					<span id="sp1" onclick="playPreview($(this).prev())"><></span>
+				</div>
+			</li>
 		</ul>
 	</div>
 
 	<div class="row">
 		<hr />
 		<h4>Upload a new sound here</h4>
-		<p>Short sounds work the best</p>
+		<p>Short sounds work the best.</p>
 		<form method="POST" enctype="multipart/form-data" action="/upload/">
 			<input type="file" class="white radius nice button" name="myfile" />
 			<input type="button" class="green radius nice button" value="Upload!"  />
 		</form>
-	</div>	
-
-	
+	</div>
 
 	<!-- Included JS Files -->
 	<script src="javascripts/jquery.min.js"></script>

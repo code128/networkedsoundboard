@@ -35,6 +35,16 @@ class playLocalSound:
         self.playSound(name)
         return "Sound played."     
 
+class playRemoteSound:
+    def GET(self, sndName):
+        try:
+            if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
+                print os.path.join(localPath, soundEffectsDirectory, sndName)
+                f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'r')
+                return f.read()
+        except:
+            return '' # you can send an 404 error here if you want        
+
 class getSoundList:
     def GET(self):
         responseObject = {}
@@ -73,8 +83,8 @@ urls = (
     '/getSounds/', 'getSoundList',
     '/speak/(.*)', 'speak',
     '/upload/', 'Upload', 
+    '/preview/(.*)', 'playRemoteSound',
     '/play/(.*)', 'playLocalSound',
-    '/static*', 'index',
     '/','index'
 )
 
