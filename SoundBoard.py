@@ -41,7 +41,6 @@ class playRemoteSound:
     def GET(self, sndName):
         try:
             if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
-                print os.path.join(localPath, soundEffectsDirectory, sndName)
                 f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'r')
                 return f.read()
         except:
@@ -53,10 +52,11 @@ class getSoundList:
         soundArray = os.listdir(soundEffectsDirectory)
         cleanSounds = []
         for s in soundArray:
-            soundObj = []
-            soundObj.append(s)
-            soundObj.append(s[:-4].replace("_", " ").title())
-            cleanSounds.append(soundObj)
+            if not s.startswith("."):
+                soundObj = []
+                soundObj.append(s)
+                soundObj.append(s[:-4].replace("_", " ").title())
+                cleanSounds.append(soundObj)
         responseObject["sounds"] = cleanSounds
         return json.dumps(responseObject)
 
