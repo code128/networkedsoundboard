@@ -8,8 +8,9 @@
 
 try:
     import json
-except:
-    from simplejson import json
+except ImportError:
+    try:
+        import simplejson as json
 
 import web
 import os 
