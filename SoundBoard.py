@@ -6,14 +6,15 @@
 # V 2.0
 ##  
 
-try:
-    import json
-except ImportError:
-    try:
-        import simplejson as json
 
 import web
 import os 
+import sys
+
+if sys.version_info < (2,6):
+    import simplejson as json
+else:
+    import json
 
 localPath = os.path.dirname( os.path.realpath( __file__ ) )
 
