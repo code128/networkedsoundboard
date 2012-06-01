@@ -3,9 +3,10 @@
 # SoundBoard runs on an OSX machine and plays sounds from the command line
 # when told to by HTTP requests. Multiple clients can control it and 
 # play sound effects from the included Flash interface. 
-# V 1.1
+# V 1.0
 ##  
 
+import json
 import web
 import os 
 
@@ -32,13 +33,27 @@ class playLocalSound:
 
 class getSoundList:
     def GET(self):
-        return os.listdir(soundEffectsDirectory).__str__()[1:-1] #Remove the brackets around the list repr with [1:-1]
+        responseObject = {}
+        soundArray = os.listdir(soundEffectsDirectory)
+        cleanSounds = []
+        for s in soundArray:
+            soundObj = []
+            soundObj.append(s)
+            soundObj.append(s[:-4].replace("_", " ").title())
+            cleanSounds.append(soundObj)
+        responseObject["sounds"] = cleanSounds
+        return json.dumps(responseObject)
 
 class speak:
     def GET(self, words):
     	if words:
     		os.popen(osSpeakCommand + " " + words)
         return "said"
+
+class index:
+    def GET(self):
+        raise web.seeother('/static/index.html')
+
 
 class Upload:
     def GET(self):
@@ -55,13 +70,14 @@ class Upload:
         f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
         f.write(x['myfile'].value)
         f.close()
-        raise web.seeother('/static/SoundBoard.html')
+        raise web.seeother('/static/index.html')
 
 urls = (
     '/getSounds/', 'getSoundList',
     '/speak/(.*)', 'speak',
     '/upload/', 'Upload', 
-    '/(.*)', 'playLocalSound',
+    '/play/(.*)', 'playLocalSound',
+    '/','index'
 )
 app = web.application(urls, globals())
 

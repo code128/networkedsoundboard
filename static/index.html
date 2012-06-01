@@ -78,7 +78,7 @@
 				var items = [];
 				$.each(data["sounds"], function(val) {
 			    	soundName = data["sounds"][val];
-			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName + '">' + soundName + '</a>';
+			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName[0] + '">' + soundName[1] + '</a>';
 					divClass = '<li>' + soundButton + '</li>'
 			    	items.push(divClass);
 			  	});
