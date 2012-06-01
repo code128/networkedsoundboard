@@ -3,7 +3,7 @@
 # SoundBoard runs on an OSX machine and plays sounds from the command line
 # when told to by HTTP requests. Multiple clients can control it and 
 # play sound effects from the included Flash interface. 
-# V 1.0
+# V 1.1
 ##  
 
 import json
@@ -54,7 +54,6 @@ class index:
     def GET(self):
         raise web.seeother('/static/index.html')
 
-
 class Upload:
     def GET(self):
         return """<html><head></head><body>
@@ -72,14 +71,20 @@ class Upload:
         f.close()
         raise web.seeother('/static/index.html')
 
+def notfound():
+    raise web.seeother('/static/index.html')
+
 urls = (
     '/getSounds/', 'getSoundList',
     '/speak/(.*)', 'speak',
     '/upload/', 'Upload', 
     '/play/(.*)', 'playLocalSound',
+    '/static*', 'index',
     '/','index'
 )
+
 app = web.application(urls, globals())
+app.notfound = notfound
 
 if __name__ == "__main__":
     app.run()
