@@ -16,11 +16,17 @@ if sys.version_info < (2,6):
 else:
     import json
 
+
 localPath = os.path.dirname( os.path.realpath( __file__ ) )
 
 ## ------------SETTINGS----------------------
-soundEffectsDirectory = 'soundEffects'		 
-cmdLinePlaySoundCommand = os.path.join(localPath, "play") # Update "play" if you want to use a different audio player. 
+if os.name == 'nt':
+    soundPlayer = "microwav" # Update "microwav" if you want to use a different audio player. 
+else:
+    soundPlayer = "play"     # Update "play" if you want to use a different audio player. 
+
+soundEffectsDirectory = 'soundEffects'    
+cmdLinePlaySoundCommand = os.path.join(localPath, soundPlayer) 
 osSpeakCommand = "say"
 ## ------------SETTINGS----------------------
 
