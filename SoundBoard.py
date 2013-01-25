@@ -80,8 +80,8 @@ class index:
 class Upload:
     def POST(self):
         x = web.input(myfile={})
-        f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'w')
-        f.write(x['myfile'].value , "wb")
+        f = open(os.path.join(localPath, soundEffectsDirectory, x['myfile'].filename), 'wb')
+        f.write(x['myfile'].value)
         f.close()
         raise web.seeother('/static/index.html')
 
