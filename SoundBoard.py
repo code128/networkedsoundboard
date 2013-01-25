@@ -21,7 +21,7 @@ localPath = os.path.dirname( os.path.realpath( __file__ ) )
 
 ## ------------SETTINGS----------------------
 if os.name == 'nt':
-    soundPlayer = "playwav.exe" # Update "microwav" if you want to use a different audio player. 
+    soundPlayer = "playwav" # Update "microwav" if you want to use a different audio player. 
     #soundPlayer = "playwav2.exe" # Update "microwav" if you want to use a different audio player. 
 else:
     soundPlayer = "play"     # Update "play" if you want to use a different audio player. 
@@ -36,7 +36,7 @@ class playLocalSound:
     def playSound(self, sndName):
         print sndName
         if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
-            os.popen(cmdLinePlaySoundCommand + " '" + os.path.join(localPath, soundEffectsDirectory, sndName) + "'")
+            os.popen(cmdLinePlaySoundCommand + ' "' + os.path.join(localPath, soundEffectsDirectory, sndName) + '"')
 
     def GET(self, name):
         if not name:
