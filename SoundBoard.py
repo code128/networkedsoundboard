@@ -21,11 +21,12 @@ localPath = os.path.dirname( os.path.realpath( __file__ ) )
 
 ## ------------SETTINGS----------------------
 if os.name == 'nt':
-    soundPlayer = "microwav" # Update "microwav" if you want to use a different audio player. 
+    soundPlayer = "playwav.exe" # Update "microwav" if you want to use a different audio player. 
+    #soundPlayer = "playwav2.exe" # Update "microwav" if you want to use a different audio player. 
 else:
     soundPlayer = "play"     # Update "play" if you want to use a different audio player. 
 
-soundEffectsDirectory = 'soundEffects'    
+soundEffectsDirectory = 'sounds'    
 cmdLinePlaySoundCommand = os.path.join(localPath, soundPlayer) 
 osSpeakCommand = "say"
 ## ------------SETTINGS----------------------
