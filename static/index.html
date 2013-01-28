@@ -62,12 +62,18 @@
 
 	<div class="row">
 		<hr />
-		<h4>Upload a new sound here</h4>
-		<p>Short sounds work the best.</p>
+		<h4>Upload new sounds here</h4>
+		<p>Short .wav files work the best.</p>
 		<form method="POST" enctype="multipart/form-data" action="/upload/">
 			<input type="file" class="white radius nice button" name="myfile" />
 			<input type="submit" class="green radius nice button" value="Upload!"  />
 		</form>
+		<hr />
+		<form method="POST" id="talker" enctype="multipart/form-data" action="/speak/">
+			<label>Type and Speak</label>
+			<input type="text" class="white radius nice" style="width:300px;" name="words" />
+			<input type="submit" class="green radius nice button" style="width:120px;" value="Speak! "  />
+		</form>		
 	</div>
 
 	<!-- Included JS Files -->
@@ -89,7 +95,7 @@
 				$.each(data["sounds"], function(val) {
 			    	soundName = data["sounds"][val];
 			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName[0] + '">' + soundName[1] + '</a>';
-			    	previewButton = '<a href="#" onclick="playPreview($(this).prev())">♪</a>'
+			    	previewButton = '<a href="#" class="preview" onclick="playPreview($(this).prev())">♪</a>'
 					divClass = '<li>' + soundButton + previewButton + '</li>'
 			    	items.push(divClass);
 			  	});
@@ -113,6 +119,58 @@
 			console.log($(preview_player)[0]);
 			$(preview_player)[0].play();
 		}
+
+
+		// variable to hold request
+		var request;
+		// bind to the submit event of our form
+		$("#talker").submit(function(event){
+		    // abort any pending request
+		    if (request) {
+		        request.abort();
+		    }
+		    // setup some local variables
+		    var $form = $(this);
+		    // let's select and cache all the fields
+		    var $inputs = $form.find("input, select, button, textarea");
+		    // serialize the data in the form
+		    var serializedData = $form.serialize();
+
+		    // let's disable the inputs for the duration of the ajax request
+		    $inputs.prop("disabled", true);
+
+		    // fire off the request to /form.php
+		    var request = $.ajax({
+		        url: "/speak/",
+		        type: "post",
+		        data: serializedData
+		    });
+
+		    // callback handler that will be called on success
+		    request.done(function (response, textStatus, jqXHR){
+		        // log a message to the console
+		        console.log("Hooray, it worked!");
+		    });
+
+		    // callback handler that will be called on failure
+		    request.fail(function (jqXHR, textStatus, errorThrown){
+		        // log the error to the console
+		        console.error(
+		            "The following error occured: "+
+		            textStatus, errorThrown
+		        );
+		    });
+
+		    // callback handler that will be called regardless
+		    // if the request failed or succeeded
+		    request.always(function () {
+		        // reenable the inputs
+		        $inputs.prop("disabled", false);
+		    });
+
+		    // prevent default posting of form
+		    event.preventDefault();
+		});		
 
 
 	</script>

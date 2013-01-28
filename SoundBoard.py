@@ -21,14 +21,15 @@ localPath = os.path.dirname( os.path.realpath( __file__ ) )
 
 ## ------------SETTINGS----------------------
 if os.name == 'nt':
-    soundPlayer = "playwav" # Update "microwav" if you want to use a different audio player. 
-    #soundPlayer = "playwav2.exe" # Update "microwav" if you want to use a different audio player. 
-else:
+    soundPlayer = "playwav" # Update "playwav" if you want to use a different audio player. 
+    osSpeakCommand = "SayStatic"
+else: #Assuming it's OSX
     soundPlayer = "play"     # Update "play" if you want to use a different audio player. 
+    osSpeakCommand = "say"
 
 soundEffectsDirectory = 'sounds'    
 cmdLinePlaySoundCommand = os.path.join(localPath, soundPlayer) 
-osSpeakCommand = "say"
+
 ## ------------SETTINGS----------------------
 
 
@@ -48,7 +49,7 @@ class playRemoteSound:
     def GET(self, sndName):
         try:
             if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
-                f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'r')
+                f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'rb')
                 return f.read()
         except:
             return '' # you can send an 404 error here if you want        
@@ -68,10 +69,12 @@ class getSoundList:
         return json.dumps(responseObject)
 
 class speak:
-    def GET(self, words):
-    	if words:
-    		os.popen(osSpeakCommand + " " + words)
-        return "said"
+    def POST(self, words):
+        user_data = web.input()
+        print user_data.words
+    	if user_data.words:
+            os.popen(osSpeakCommand + " " + user_data.words)
+        raise web.seeother('/static/index.html')
 
 class index:
     def GET(self):
