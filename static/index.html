@@ -99,15 +99,24 @@
 		$(document).ready(function() {
   			// Handler for .ready() called.
 			$.getJSON('../getSounds/', function(data) {
+				soundItems = [];
 				var items = [];
-				soundItems = data["sounds"];
-				$.each(data["sounds"], function(val) {
-			    	soundName = data["sounds"][val];
-			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName[0] + '">' + soundName[1] + '</a>';
-			    	previewButton = '<a href="#" class="preview" onclick="playPreview($(this).prev())">♪</a>'
-					divClass = '<li>' + soundButton + previewButton + '</li>'
-			    	items.push(divClass);
-			  	});
+				for (var i=0; i<data.length;i++) //Object {soundFiles: Array[5], folderName: "sounds"}
+				{ 
+					folderName = data[i]["folderName"];
+					if (folderName != "sounds") {
+						items.push('<h3>' + folderName + '</h3>')	
+					}
+					
+					for (var j=0; j<data[i]["soundFiles"].length;j++) {
+						soundName = data[i]["soundFiles"][j];
+				    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + folderName + '/' + soundName[0] + '">' + soundName[1] + '</a>';
+				    	previewButton = '<a href="#" class="preview" onclick="playPreview($(this).prev())">♪</a>'
+						divClass = '<li>' + soundButton + previewButton + '</li>'
+				    	items.push(divClass);
+				    	soundItems.push([folderName + '/' + soundName[0], soundName[1]]);
+					}
+				}
 			  	for (var item in items){
 			  		$("#button_grid").append(items[item]);
 			  	}
