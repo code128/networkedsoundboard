@@ -55,6 +55,12 @@
 	</div>
 	<audio id="preview_player"></audio>
 
+    <div class="row">
+    	<div id="the-basics">
+  			<input class="typeahead" type="text" placeholder="Sound Name">
+		</div>
+    </div>            
+
 	<div id="button_grid" class="row">
 		<ul id="button_grid" class="block-grid five-up">
 		</ul>
@@ -86,12 +92,15 @@
 	<script src="javascripts/jquery.tooltips.js"></script>
 	<!-- End Combine and Compress These JS Files -->
 	<script src="javascripts/app.js"></script>
+	<script src="./javascripts/typeahead.bundle.js"></script>
+    <script src="./javascripts/examples.js"></script>
 	
 	<script>
 		$(document).ready(function() {
   			// Handler for .ready() called.
 			$.getJSON('../getSounds/', function(data) {
 				var items = [];
+				soundItems = data["sounds"];
 				$.each(data["sounds"], function(val) {
 			    	soundName = data["sounds"][val];
 			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName[0] + '">' + soundName[1] + '</a>';
@@ -105,18 +114,60 @@
 			  	$("a").click(function() {
 			  		var name = this.getAttribute("data-id");
 			  		$.get('../play/' + name, function(data) {
-  						console.log("played");
+  						// console.log("played");
 					});
 				})
+
+			var substringMatcher = function(strs) {
+			  return function findMatches(q, cb) {
+			    var matches, substringRegex;
+			 
+			    // an array that will be populated with substring matches
+			    matches = [];
+			 
+			    // regex used to determine if a string contains the substring `q`
+			    substrRegex = new RegExp(q, 'i');
+			 
+			    // iterate through the pool of strings and for any string that
+			    // contains the substring `q`, add it to the `matches` array
+			    $.each(strs, function(i, str) {
+			      if (substrRegex.test(str)) {
+			        // the typeahead jQuery plugin expects suggestions to a
+			        // JavaScript object, refer to typeahead docs for more info
+			        matches.push({ value: str });
+			      }
+			    });
+			 
+			    cb(matches);
+			  };
+			};
+
+			 
+			$('#the-basics .typeahead').typeahead({
+			  hint: true,
+			  highlight: true,
+			  minLength: 1
+			},
+			{
+			  name: 'sounds',
+		      displayKey: function(item) {
+		        return item.value[1]
+    			},
+			  source: substringMatcher(soundItems)
+			}).bind('typeahead:selected', function(obj, datum, name) {
+					$.get('../play/' + datum.value[0]);
+				}).bind('typeahead:autocompleted', function(obj, datum, name) {
+					$.get('../play/' + datum.value[0]);
+				});
+	
 			});
 
 		});
 
+
 		playPreview = function(p){
 			var soundName = $(p[0]).attr("data-id");
 			$(preview_player)[0].src = "../preview/" + soundName;
-			console.log($(preview_player));
-			console.log($(preview_player)[0]);
 			$(preview_player)[0].play();
 		}
 
@@ -149,7 +200,7 @@
 		    // callback handler that will be called on success
 		    request.done(function (response, textStatus, jqXHR){
 		        // log a message to the console
-		        console.log("Hooray, it worked!");
+		        // console.log("Hooray, it worked!");
 		    });
 
 		    // callback handler that will be called on failure
@@ -170,7 +221,9 @@
 
 		    // prevent default posting of form
 		    event.preventDefault();
-		});		
+		});
+
+
 
 
 	</script>
