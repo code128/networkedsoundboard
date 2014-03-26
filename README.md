@@ -62,5 +62,6 @@ Libraries & Applications Used
 * [play] (http://www.hieper.nl/)
 * [ZURB Foundation] (http://foundation.zurb.com/)
 * [jQuery] (http://jquery.com/)
+* [typeAhead.js ] (http://twitter.github.io/typeahead.js/examples/)
 
 Example sounds are from [simplythebest.net](http://simplythebest.net/sounds/WAV/WAV_sounds.html)
