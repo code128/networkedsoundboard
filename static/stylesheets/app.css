@@ -1,6 +1,7 @@
 /* Artfully masterminded by ZURB  */
 .preview {
-	font-size: x-large;
+	font-size: xx-large;
+  margin-left: 5px;
 }
 /* -------------------------------------------------- 
    Table of Contents
@@ -21,7 +22,10 @@
    Page Name 1
 ----------------------------------------- */
 
-
+body {
+  margin-top: 15px;
+  margin-left: 10px;
+}
 
 
 /* -----------------------------------------
