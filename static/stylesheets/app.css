@@ -16,7 +16,16 @@
    Shared Styles
 ----------------------------------------- */
 
-
+.soundplayer{
+  width:200px;
+  height:100px;
+  font-size: 24px;
+  text-align:left;
+  /*background-image:url('/static/images/horn.png');
+  background-repeat: no-repeat;
+  background-position:30px -10px;
+  */
+}
 
 /* -----------------------------------------
    Page Name 1
@@ -31,8 +40,6 @@ body {
   margin-left: 0px
 }
 
-.typeahead .input {
-}
 
 /* -----------------------------------------
    Page Name 2
@@ -44,13 +51,14 @@ body {
             .typeahead,
             .tt-query,
             .tt-hint {
+              width: 507px;
               padding: 8px 12px;
               font-size: 24px;
               outline: none;
             }
             .typeahead {
               background-color: #fff;
-              width:375px;
+              width:507px;
 
             }
             .tt-query {
@@ -63,7 +71,7 @@ body {
             }
             .tt-dropdown-menu {
               width: 422px;
-              margin-top: 12px;
+              margin-top: 0px;
               padding: 8px 0;
               background-color: #fff;
               border: 1px solid #ccc;

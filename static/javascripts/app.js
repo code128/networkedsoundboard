@@ -1,4 +1,159 @@
-jQuery(document).ready(function ($) {
+$(document).ready(function ($) {
+
+	$.getJSON('../getSounds/', function(data) {
+	soundItems = [];
+	var items = [];
+	for (var i=0; i<data.length;i++) //Object {soundFiles: Array[5], folderName: "sounds"}
+	{ 
+		
+		folderName = data[i]["folderName"];
+		if (folderName != "sounds") {
+			items.push('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-5">');
+			items.push('<h3>' + folderName + '</h3>')	
+		}
+		
+		for (var j=0; j<data[i]["soundFiles"].length;j++) {
+			soundName = data[i]["soundFiles"][j];
+
+			/*
+			<li>
+				<a href="#" class="button" data-dropdown="hover1" data-options="is_hover:true">Has Hover Dropdown</a>
+
+				<ul id="hover1" class="f-dropdown" data-dropdown-content>
+				  <li><a href="#">This is a link</a></li>
+				  <li><a href="#">This is another</a></li>
+				  <li><a href="#">Yet another</a></li>
+				</ul>
+			</li>	
+			*/
+
+	    	divClass = '<li>';
+	    	soundButton = '<a href="#" class="button soundplayer" data-dropdown="hover' + i + j +'" data-options="is_hover:true" data-id="' + folderName + '/' + soundName[0] + '">' + soundName[1] + '</a>';
+	    	previewButton = '<ul id="hover' + i + j + '" class="f-dropdown" data-dropdown-content="">'
+	    	previewButton += '<li><a href="#" data-id="' + folderName + '/' + soundName[0] +'" onclick="playPreview($(this))">Preview Sound Locally</a></li></ul>'
+	    	
+			divClass += soundButton + previewButton + '</li>'
+	    	items.push(divClass);
+	    	soundItems.push([folderName + '/' + soundName[0], soundName[1]]);
+		}
+		if (folderName != "sounds") {
+			items.push('</ul>');
+		}
+		
+	}
+  	for (var item in items){
+  		$("#button_grid").append(items[item]);
+  	}
+
+  	$(".button").click(function() {
+  		var name = this.getAttribute("data-id");
+  		$.get('../play/' + name, function(data) {
+				// console.log("played");
+		});
+	})
+	$(document).foundation();
+
+	var substringMatcher = function(strs) {
+	  return function findMatches(q, cb) {
+	    var matches, substringRegex;
+	 
+	    // an array that will be populated with substring matches
+	    matches = [];
+	 
+	    // regex used to determine if a string contains the substring `q`
+	    substrRegex = new RegExp(q, 'i');
+	 
+	    // iterate through the pool of strings and for any string that
+	    // contains the substring `q`, add it to the `matches` array
+	    $.each(strs, function(i, str) {
+	      if (substrRegex.test(str)) {
+	        // the typeahead jQuery plugin expects suggestions to a
+	        // JavaScript object, refer to typeahead docs for more info
+	        matches.push({ value: str });
+	      }
+	    });
+	 
+	    cb(matches);
+	  };
+	};
+
+ 
+	$('#the-basics .typeahead').typeahead({
+	  hint: true,
+	  highlight: true,
+	  minLength: 1
+	},
+	{
+	  name: 'sounds',
+	  displayKey: function(item) {
+	    return item.value[1]
+		},
+	  source: substringMatcher(soundItems)
+	}).bind('typeahead:selected', function(obj, datum, name) {
+			$.get('../play/' + datum.value[0]);
+		}).bind('typeahead:autocompleted', function(obj, datum, name) {
+			$.get('../play/' + datum.value[0]);
+		});
+
+	});
+
+	playPreview = function(p){
+		var soundName = $(p).attr("data-id");
+		$(preview_player)[0].src = "../preview/" + soundName;
+		$(preview_player)[0].play();
+	}
+
+
+	// variable to hold request
+	var request;
+	// bind to the submit event of our form
+	$("#talker").submit(function(event){
+	// abort any pending request
+	if (request) {
+	    request.abort();
+	}
+	// setup some local variables
+	var $form = $(this);
+	// let's select and cache all the fields
+	var $inputs = $form.find("input, select, button, textarea");
+	// serialize the data in the form
+	var serializedData = $form.serialize();
+
+	// let's disable the inputs for the duration of the ajax request
+	$inputs.prop("disabled", true);
+
+	// fire off the request to /form.php
+	var request = $.ajax({
+	    url: "/speak/",
+	    type: "post",
+	    data: serializedData
+	});
+
+	// callback handler that will be called on success
+	request.done(function (response, textStatus, jqXHR){
+	    // log a message to the console
+	    // console.log("Hooray, it worked!");
+	});
+
+	// callback handler that will be called on failure
+	request.fail(function (jqXHR, textStatus, errorThrown){
+	    // log the error to the console
+	    console.error(
+	        "The following error occured: "+
+	        textStatus, errorThrown
+	    );
+	});
+
+	// callback handler that will be called regardless
+	// if the request failed or succeeded
+	request.always(function () {
+	    // reenable the inputs
+	    $inputs.prop("disabled", false);
+	});
+
+	// prevent default posting of form
+	event.preventDefault();
+	});
 
 	/* Use this js doc for all application specific JS */
 
@@ -90,8 +245,5 @@ jQuery(document).ready(function ($) {
     })
   }
 
-
-	/* DISABLED BUTTONS ------------- */
-	/* Gives elements with a class of 'disabled' a return: false; */
   
 });
