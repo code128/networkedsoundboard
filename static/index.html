@@ -47,28 +47,32 @@
 <body>
 	
 	<div class="row">
-		<div class="twelve columns">
+		<div class="large-1 columns">
 			<h2>Networked Soundboard</h2>
 			<p>Go on, play something.</p>
-			<hr />
 		</div>
+		<div class="large-1 columns" id="the-basics">
+  			<input class="typeahead" type="text" placeholder="Quick Trigger">
+		</div>
+		<hr>
 	</div>
 	<audio id="preview_player"></audio>
 
     <div class="row">
-    	<div id="the-basics">
-  			<input class="typeahead" type="text" placeholder="Sound Name">
-		</div>
+    	
     </div>            
 
 	<div id="button_grid" class="row">
 		<ul id="button_grid" class="block-grid five-up">
+			<a href="#" class="button" data-id="sounds/aladdin_goodbye.wav">Aladdin Goodbye</a>
+			<a href="#" class="preview" onclick="playPreview($(this).prev())">
+			<img src="images/headphones.png"</a>
 		</ul>
 	</div>
 
 	<div class="row">
 		<hr />
-		<h4>Upload new sounds here</h4>
+		
 		<p>Short .wav files work the best.</p>
 		<form method="POST" enctype="multipart/form-data" action="/upload/">
 			<input type="file" class="white radius nice button" name="myfile" />
@@ -76,7 +80,7 @@
 		</form>
 		<hr />
 		<form method="POST" id="talker" enctype="multipart/form-data" action="/speak/">
-			<label>Type and Speak</label>
+			<h4>Say Something</h4>
 			<input type="text" class="white radius nice" style="width:300px;" name="words" />
 			<input type="submit" class="green radius nice button" style="width:120px;" value="Speak! "  />
 		</form>		
@@ -110,7 +114,16 @@
 					
 					for (var j=0; j<data[i]["soundFiles"].length;j++) {
 						soundName = data[i]["soundFiles"][j];
-				    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + folderName + '/' + soundName[0] + '">' + soundName[1] + '</a>';
+
+						// <a href="#" class="button split">Split Button <span data-dropdown="drop"></span></a><br>
+						// <ul id="drop" class="f-dropdown" data-dropdown-content>
+						//   <li><a href="#">This is a link</a></li>
+						//   <li><a href="#">This is another</a></li>
+						//   <li><a href="#">Yet another</a></li>
+						// </ul>
+
+
+				    	soundButton = '<a href="#" class="button" data-id="' + folderName + '/' + soundName[0] + '">' + soundName[1] + '</a>';
 				    	previewButton = '<a href="#" class="preview" onclick="playPreview($(this).prev())">♪</a>'
 						divClass = '<li>' + soundButton + previewButton + '</li>'
 				    	items.push(divClass);
