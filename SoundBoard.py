@@ -63,6 +63,8 @@ class playLocalSound:
 
 class playRemoteSound:
     def GET(self, sndName):
+        if sndName.startswith(soundEffectsDirectory):
+            sndName = sndName[len(soundEffectsDirectory)+1:]
         try:
             if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
                 f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'rb')
