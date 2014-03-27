@@ -5,9 +5,10 @@ $(document).ready(function ($) {
 	var items = [];
 	for (var i=0; i<data.length;i++) //Object {soundFiles: Array[5], folderName: "sounds"}
 	{ 
-		items.push('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-5">');
+		
 		folderName = data[i]["folderName"];
 		if (folderName != "sounds") {
+			items.push('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-5">');
 			items.push('<h3>' + folderName + '</h3>')	
 		}
 		
@@ -35,7 +36,10 @@ $(document).ready(function ($) {
 	    	items.push(divClass);
 	    	soundItems.push([folderName + '/' + soundName[0], soundName[1]]);
 		}
-		items.push('</ul>');
+		if (folderName != "sounds") {
+			items.push('</ul>');
+		}
+		
 	}
   	for (var item in items){
   		$("#button_grid").append(items[item]);
