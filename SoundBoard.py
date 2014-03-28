@@ -32,10 +32,26 @@ cmdLinePlaySoundCommand = os.path.join(localPath, soundPlayer)
 
 ## ------------SETTINGS----------------------
 
+def walkSoundDirectories(soundEffectsDirectory):
+    folderArray = []
+    for dirName, subdirList, fileList in os.walk(soundEffectsDirectory):
+        responseObject = {}
+        responseObject["folderName"] = os.path.basename(dirName)
+        responseObject["soundFiles"] = []
+        for fname in fileList:
+            if not fname.startswith("."):
+                soundObj = []
+                soundObj.append(fname)
+                soundObj.append(fname[:-4].replace("_", " ").title())
+                responseObject["soundFiles"].append(soundObj)
+        folderArray.append(responseObject)
+    return folderArray
 
 class playLocalSound:
     def playSound(self, sndName):
         print sndName
+        if sndName.startswith(soundEffectsDirectory):
+            sndName = sndName[len(soundEffectsDirectory)+1:]
         if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
             os.popen(cmdLinePlaySoundCommand + ' "' + os.path.join(localPath, soundEffectsDirectory, sndName) + '"')
 
@@ -47,6 +63,8 @@ class playLocalSound:
 
 class playRemoteSound:
     def GET(self, sndName):
+        if sndName.startswith(soundEffectsDirectory):
+            sndName = sndName[len(soundEffectsDirectory)+1:]
         try:
             if (os.path.exists((os.path.join(localPath, soundEffectsDirectory, sndName )))):
                 f = open(os.path.join(localPath, soundEffectsDirectory, sndName), 'rb')
@@ -56,17 +74,7 @@ class playRemoteSound:
 
 class getSoundList:
     def GET(self):
-        responseObject = {}
-        soundArray = os.listdir(soundEffectsDirectory)
-        cleanSounds = []
-        for s in soundArray:
-            if not s.startswith("."):
-                soundObj = []
-                soundObj.append(s)
-                soundObj.append(s[:-4].replace("_", " ").title())
-                cleanSounds.append(soundObj)
-        responseObject["sounds"] = cleanSounds
-        return json.dumps(responseObject)
+        return json.dumps(walkSoundDirectories(soundEffectsDirectory))        
 
 class speak:
     def POST(self, words):

@@ -1,231 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Networked Soundboard</title>
+    <link rel="stylesheet" href="stylesheets/foundation.css" />
+    <link rel="stylesheet" href="stylesheets/app.css">
+    <script src="javascripts/vendor/modernizr.js"></script>
+    <script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/jquery.placeholder.min.js"></script>
+	<script src="javascripts/jquery.tooltips.js"></script>
+	<script src="javascripts/typeahead.bundle.js"></script>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/foundation.min.js"></script>
+  </head>
 
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="utf-8" />
-
-	<!-- Set the viewport width to device width for mobile -->
-	<meta name="viewport" content="width=device-width" />
-
-	<title>Networked Soundboard</title>
-  
-	<!-- Included CSS Files -->
-	<!-- Combine and Compress These CSS Files -->
-	<link rel="stylesheet" href="stylesheets/globals.css">
-	<link rel="stylesheet" href="stylesheets/typography.css">
-	<link rel="stylesheet" href="stylesheets/grid.css">
-	<link rel="stylesheet" href="stylesheets/ui.css">
-	<link rel="stylesheet" href="stylesheets/forms.css">
-	<link rel="stylesheet" href="stylesheets/orbit.css">
-	<link rel="stylesheet" href="stylesheets/reveal.css">
-	<link rel="stylesheet" href="stylesheets/mobile.css">
-	<!-- End Combine and Compress These CSS Files -->
-	<link rel="stylesheet" href="stylesheets/app.css">
-
-	<!--[if lt IE 9]>
-		<link rel="stylesheet" href="stylesheets/ie.css">
-	<![endif]-->
-
-	<script src="javascripts/modernizr.foundation.js"></script>
-
-	<!-- IE Fix for HTML5 Tags -->
-	<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<style type="text/css">
-		
-		.display-grid .row { background: #eee; margin-bottom: 8px; }
-		.display-grid .column, .display-grid .columns { background: #ddd; }
-				
-	</style>
-</head>
-<body>
+  <body>
 	
 	<div class="row">
-		<div class="twelve columns">
+		<div class="large-6 columns">
 			<h2>Networked Soundboard</h2>
-			<p>Go on, play something.</p>
-			<hr />
 		</div>
+		<div class="large-4 columns" id="the-basics">
+			<input class="typeahead" type="text" placeholder="Quick Trigger">
+		</div>					
+		<hr>
 	</div>
-	<audio id="preview_player"></audio>
+	
 
-    <div class="row">
-    	<div id="the-basics">
-  			<input class="typeahead" type="text" placeholder="Sound Name">
-		</div>
-    </div>            
-
-	<div id="button_grid" class="row">
-		<ul id="button_grid" class="block-grid five-up">
-		</ul>
+	<div class="row">
+		<ul id="button_grid" class=
+		    "small-block-grid-2 medium-block-grid-3 large-block-grid-5">
+		 </ul>
 	</div>
 
 	<div class="row">
 		<hr />
-		<h4>Upload new sounds here</h4>
+		
 		<p>Short .wav files work the best.</p>
 		<form method="POST" enctype="multipart/form-data" action="/upload/">
 			<input type="file" class="white radius nice button" name="myfile" />
 			<input type="submit" class="green radius nice button" value="Upload!"  />
 		</form>
+
 		<hr />
+		
 		<form method="POST" id="talker" enctype="multipart/form-data" action="/speak/">
-			<label>Type and Speak</label>
+			<h4>Say Something</h4>
 			<input type="text" class="white radius nice" style="width:300px;" name="words" />
 			<input type="submit" class="green radius nice button" style="width:120px;" value="Speak! "  />
 		</form>		
 	</div>
-
-	<!-- Included JS Files -->
-	<script src="javascripts/jquery.min.js"></script>
-	<!-- Combine and Compress These JS Files -->
-	<script src="javascripts/jquery.reveal.js"></script>
-	<script src="javascripts/jquery.orbit-1.4.0.js"></script>
-	<script src="javascripts/jquery.customforms.js"></script>
-	<script src="javascripts/jquery.placeholder.min.js"></script>
-	<script src="javascripts/jquery.tooltips.js"></script>
-	<!-- End Combine and Compress These JS Files -->
-	<script src="javascripts/app.js"></script>
-	<script src="./javascripts/typeahead.bundle.js"></script>
-    <script src="./javascripts/examples.js"></script>
-	
-	<script>
-		$(document).ready(function() {
-  			// Handler for .ready() called.
-			$.getJSON('../getSounds/', function(data) {
-				var items = [];
-				soundItems = data["sounds"];
-				$.each(data["sounds"], function(val) {
-			    	soundName = data["sounds"][val];
-			    	soundButton = '<a href="#" class="nice radius small blue button" data-id="' + soundName[0] + '">' + soundName[1] + '</a>';
-			    	previewButton = '<a href="#" class="preview" onclick="playPreview($(this).prev())">♪</a>'
-					divClass = '<li>' + soundButton + previewButton + '</li>'
-			    	items.push(divClass);
-			  	});
-			  	for (var item in items){
-			  		$("#button_grid").append(items[item]);
-			  	}
-			  	$("a").click(function() {
-			  		var name = this.getAttribute("data-id");
-			  		$.get('../play/' + name, function(data) {
-  						// console.log("played");
-					});
-				})
-
-			var substringMatcher = function(strs) {
-			  return function findMatches(q, cb) {
-			    var matches, substringRegex;
-			 
-			    // an array that will be populated with substring matches
-			    matches = [];
-			 
-			    // regex used to determine if a string contains the substring `q`
-			    substrRegex = new RegExp(q, 'i');
-			 
-			    // iterate through the pool of strings and for any string that
-			    // contains the substring `q`, add it to the `matches` array
-			    $.each(strs, function(i, str) {
-			      if (substrRegex.test(str)) {
-			        // the typeahead jQuery plugin expects suggestions to a
-			        // JavaScript object, refer to typeahead docs for more info
-			        matches.push({ value: str });
-			      }
-			    });
-			 
-			    cb(matches);
-			  };
-			};
-
-			 
-			$('#the-basics .typeahead').typeahead({
-			  hint: true,
-			  highlight: true,
-			  minLength: 1
-			},
-			{
-			  name: 'sounds',
-		      displayKey: function(item) {
-		        return item.value[1]
-    			},
-			  source: substringMatcher(soundItems)
-			}).bind('typeahead:selected', function(obj, datum, name) {
-					$.get('../play/' + datum.value[0]);
-				}).bind('typeahead:autocompleted', function(obj, datum, name) {
-					$.get('../play/' + datum.value[0]);
-				});
-	
-			});
-
-		});
-
-
-		playPreview = function(p){
-			var soundName = $(p[0]).attr("data-id");
-			$(preview_player)[0].src = "../preview/" + soundName;
-			$(preview_player)[0].play();
-		}
-
-
-		// variable to hold request
-		var request;
-		// bind to the submit event of our form
-		$("#talker").submit(function(event){
-		    // abort any pending request
-		    if (request) {
-		        request.abort();
-		    }
-		    // setup some local variables
-		    var $form = $(this);
-		    // let's select and cache all the fields
-		    var $inputs = $form.find("input, select, button, textarea");
-		    // serialize the data in the form
-		    var serializedData = $form.serialize();
-
-		    // let's disable the inputs for the duration of the ajax request
-		    $inputs.prop("disabled", true);
-
-		    // fire off the request to /form.php
-		    var request = $.ajax({
-		        url: "/speak/",
-		        type: "post",
-		        data: serializedData
-		    });
-
-		    // callback handler that will be called on success
-		    request.done(function (response, textStatus, jqXHR){
-		        // log a message to the console
-		        // console.log("Hooray, it worked!");
-		    });
-
-		    // callback handler that will be called on failure
-		    request.fail(function (jqXHR, textStatus, errorThrown){
-		        // log the error to the console
-		        console.error(
-		            "The following error occured: "+
-		            textStatus, errorThrown
-		        );
-		    });
-
-		    // callback handler that will be called regardless
-		    // if the request failed or succeeded
-		    request.always(function () {
-		        // reenable the inputs
-		        $inputs.prop("disabled", false);
-		    });
-
-		    // prevent default posting of form
-		    event.preventDefault();
-		});
-
-
-
-
-	</script>
+    
+	<audio id="preview_player"></audio> <!-- used for previewing sounds locally-->
 </body>
 </html>
