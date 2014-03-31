@@ -21,10 +21,12 @@
   height:100px;
   font-size: 24px;
   text-align:left;
-  /*background-image:url('/static/images/horn.png');
+  margin: 0 0 -2rem;
+}
+.soundplayer:hover {
+  background-image:url('/static/images/media-play.png');
   background-repeat: no-repeat;
-  background-position:30px -10px;
-  */
+  background-position:center;
 }
 
 /* -----------------------------------------
