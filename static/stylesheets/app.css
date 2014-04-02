@@ -16,17 +16,31 @@
    Shared Styles
 ----------------------------------------- */
 
+h3 {
+
+  margin-left: 16px;
+}
 .soundplayer{
   width:200px;
   height:100px;
   font-size: 24px;
   text-align:left;
   margin: 0 0 -2rem;
+  margin-left: 10px;
 }
 .soundplayer:hover {
   background-image:url('/static/images/media-play.png');
   background-repeat: no-repeat;
   background-position:center;
+}
+
+input.white {
+  width:320px;
+}
+input.green {
+  float:right
+  width:100px;
+  height:54px;
 }
 
 /* -----------------------------------------

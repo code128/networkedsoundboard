@@ -28,28 +28,27 @@
 	</div>
 	
 
-	<div class="row">
-		<ul id="button_grid" class=
-		    "small-block-grid-2 medium-block-grid-3 large-block-grid-5">
-		 </ul>
+	<div id="button_grid" class="row">
 	</div>
-
+	
+	<hr />
 	<div class="row">
-		<hr />
-		
-		<p>Short .wav files work the best.</p>
-		<form method="POST" enctype="multipart/form-data" action="/upload/">
-			<input type="file" class="white radius nice button" name="myfile" />
-			<input type="submit" class="green radius nice button" value="Upload!"  />
-		</form>
-
-		<hr />
-		
-		<form method="POST" id="talker" enctype="multipart/form-data" action="/speak/">
-			<h4>Say Something</h4>
-			<input type="text" class="white radius nice" style="width:300px;" name="words" />
-			<input type="submit" class="green radius nice button" style="width:120px;" value="Speak! "  />
-		</form>		
+		<div class="large-6 columns">
+			<h2>Upload new sounds</h2>
+			<p>Short .wav files work the best.</p>
+			<form method="POST" enctype="multipart/form-data" action="/upload/">
+				<input type="file" class="white radius nice button" name="myfile" />
+				<input type="submit" class="green radius nice button" value="Upload!"  />
+			</form>
+		</div>
+		<div class="large-6 columns">
+			<h2>Make it say</h2>
+			<form method="POST" id="talker" enctype="multipart/form-data" action="/speak/">
+				<h4>Say Something</h4>
+				<input type="text" class="white radius nice" style="width:300px; height:54px; font-size:x-large;" name="words" />
+				<input type="submit" class="green radius nice button" style="width:120px;" value="Speak! "  />
+			</form>
+		</div>		
 	</div>
     
 	<audio id="preview_player"></audio> <!-- used for previewing sounds locally-->

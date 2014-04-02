@@ -2,13 +2,14 @@ $(document).ready(function ($) {
 
 	$.getJSON('../getSounds/', function(data) {
 	soundItems = [];
-	var items = [];
+	
 	for (var i=0; i<data.length;i++) //Object {soundFiles: Array[5], folderName: "sounds"}
 	{ 
-		
+		var items = [];
 		folderName = data[i]["folderName"];
+		items.push('<div class="row">');
+		items.push('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-5">');
 		if (folderName != "sounds") {
-			items.push('<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-5">');
 			items.push('<h3>' + folderName + '</h3>')	
 		}
 		
@@ -36,14 +37,11 @@ $(document).ready(function ($) {
 	    	items.push(divClass);
 	    	soundItems.push([folderName + '/' + soundName[0], soundName[1]]);
 		}
-		if (folderName != "sounds") {
-			items.push('</ul>');
-		}
-		
+		items.push('</ul>');
+		items.push('</div>');
+  		$("#button_grid").append(items.join(" "));
 	}
-  	for (var item in items){
-  		$("#button_grid").append(items[item]);
-  	}
+  	
 
   	$(".button").click(function() {
   		var name = this.getAttribute("data-id");
