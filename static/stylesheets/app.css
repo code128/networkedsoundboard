@@ -54,6 +54,7 @@ body {
 
 .row {
   margin-left: 0px
+  max-width: 1000px;
 }
 
 
@@ -74,7 +75,7 @@ body {
             }
             .typeahead {
               background-color: #fff;
-              width:507px;
+              width:530px;
 
             }
             .tt-query {
